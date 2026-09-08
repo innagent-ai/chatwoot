@@ -44,6 +44,10 @@ jobs:
           temados=$(grep -rl -- '--slate-12: *41 43 47' app/javascript --include='*.scss' --include='*.css' --include='*.vue' | sort)
           echo "declaram a escala:"; echo "$declaram" | sed 's/^/  /'
           echo "receberam a tinta:"; echo "$temados" | sed 's/^/  /'
+          # Comparar duas listas fica verde quando AS DUAS sao vazias — um grep
+          # que nao acha nada viraria "cobertura perfeita". Piso explicito.
+          test "$(echo "$declaram" | grep -c .)" -ge 4 \
+            || { echo "so $(echo "$declaram" | grep -c .) arquivos declaram a escala; eram 4"; falhas=$((falhas+1)); }
           if [ "$declaram" != "$temados" ]; then
             echo "FALTA tema em:"; comm -23 <(echo "$declaram") <(echo "$temados") | sed 's/^/  /'
             falhas=$((falhas+1))
@@ -56,7 +60,9 @@ jobs:
             echo "FALTA Lato na pilha de:"; comm -23 <(echo "$pilhas") <(echo "$comLato") | sed 's/^/  /'
             falhas=$((falhas+1))
           else
-            echo "ok   todas as pilhas de fonte comecam por Lato"
+            echo "ok   todas as pilhas de fonte comecam por Lato ($(echo "$pilhas" | grep -c .))"
+            test "$(echo "$pilhas" | grep -c .)" -ge 6 \
+              || { echo "so $(echo "$pilhas" | grep -c .) pilhas encontradas; eram 6"; falhas=$((falhas+1)); }
           fi
           for l in app/views/layouts/vueapp.html.erb app/views/layouts/portal.html.erb; do
             grep -q 'fonts.googleapis.com' "$l" && echo "ok   fonte carregada em $l" \
