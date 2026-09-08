@@ -93,3 +93,21 @@ jobs:
           checa "fundo InnAgent"      "--slate-2: *238 243 249"
           checa "escuro InnAgent"     "--slate-1: *23 26 31"
           test "$falhas" = "0" || { echo "$falhas token(s) do tema faltando no bundle"; exit 1; }
+
+      # Transporte da imagem. O ghcr guarda a imagem, mas o package nasce
+      # PRIVADO e ler de fora exige o escopo read:packages, que o token da
+      # maquina nao tem. O artifact do proprio run e legivel com o escopo
+      # `repo` que ja existe — entao a imagem viaja por aqui, sem credencial
+      # nova em lugar nenhum.
+      - name: Exportar a imagem como artifact
+        run: |
+          docker save ${{ env.IMAGE }}:${{ inputs.tag }} | gzip -1 > innchat.tar.gz
+          ls -lh innchat.tar.gz
+
+      - name: Upload da imagem
+        uses: actions/upload-artifact@v4
+        with:
+          name: innchat-${{ inputs.tag }}
+          path: innchat.tar.gz
+          retention-days: 5
+          compression-level: 0
