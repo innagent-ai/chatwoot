@@ -68,3 +68,26 @@ jobs:
           docker run --rm --entrypoint sh ${{ env.IMAGE }}:${{ inputs.tag }} -c \
             'echo "CW_EDITION=$CW_EDITION"; test ! -d /app/enterprise && echo "enterprise: ausente"' \
             | tee /dev/stderr | grep -q 'enterprise: ausente'
+
+      # Guarda do TEMA. O passo acima prova a edicao; este prova a IDV.
+      # Sem ele o workflow fica verde publicando uma imagem que buildou bem e
+      # nao tem o tema — o defeito que "artefato conferido != tela conferida"
+      # descreve: a imagem existe, o CSS dentro dela e o do motor.
+      - name: Prova — a IDV do InnAgent esta no CSS compilado
+        run: |
+          cid=$(docker create ${{ env.IMAGE }}:${{ inputs.tag }})
+          docker cp "$cid:/app/public/vite/assets" ./assets-build
+          docker rm "$cid" > /dev/null
+          css=$(cat ./assets-build/*.css)
+          falhas=0
+          checa() {
+            if echo "$css" | grep -qF "$2"; then echo "ok   $1"
+            else echo "FALTA $1 ($2)"; falhas=$((falhas+1)); fi
+          }
+          checa "fonte Lato"          "Lato"
+          checa "titulos Bricolage"   "Bricolage Grotesque"
+          checa "azul InnAgent"       "--blue-9: 37 139 251"
+          checa "tinta InnAgent"      "--slate-12: 41 43 47"
+          checa "fundo InnAgent"      "--slate-2: 238 243 249"
+          checa "escuro InnAgent"     "--slate-1: 23 26 31"
+          test "$falhas" = "0" || { echo "$falhas token(s) do tema faltando no bundle"; exit 1; }
