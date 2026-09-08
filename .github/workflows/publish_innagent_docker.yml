@@ -56,8 +56,13 @@ jobs:
           # meio do CSS compilado e ignorado pelo navegador em silencio.
           pilhas=$(grep -rlE "font-family:" app/javascript --include='*.scss' --include='*.css' --include='*.vue' | xargs grep -lE -- '-apple-system' | sort)
           comLato=$(grep -rl "'Lato'," app/javascript --include='*.scss' --include='*.css' --include='*.vue' | sort)
-          if [ "$pilhas" != "$comLato" ]; then
-            echo "FALTA Lato na pilha de:"; comm -23 <(echo "$pilhas") <(echo "$comLato") | sed 's/^/  /'
+          # SUBCONJUNTO, não igualdade: toda pilha com -apple-system precisa ter Lato,
+          # mas ter Lato num arquivo SEM essa âncora não é defeito — é o caso do
+          # PortaInn.vue, que declara a própria pilha. Exigir os dois conjuntos iguais
+          # reprovava um tema correto (falso vermelho medido em 08/09).
+          semLato=$(comm -23 <(echo "$pilhas") <(echo "$comLato"))
+          if [ -n "$semLato" ]; then
+            echo "FALTA Lato na pilha de:"; echo "$semLato" | sed 's/^/  /'
             falhas=$((falhas+1))
           else
             echo "ok   todas as pilhas de fonte comecam por Lato ($(echo "$pilhas" | grep -c .))"
@@ -69,6 +74,39 @@ jobs:
               || { echo "FALTA <link> das fontes em $l"; falhas=$((falhas+1)); }
           done
           test "$falhas" = "0" || { echo "$falhas lacuna(s) de cobertura do tema"; exit 1; }
+
+      # Guarda da PORTA (a tela de entrada da familia Inn).
+      # O botao primario do login era AZUL — a regra da prancha e "acao e
+      # neutra: primario em tinta escura; cor de marca nao vira botao". Regra
+      # que depende de alguem lembrar volta: aqui ela reprova o build.
+      - name: Guarda — a porta da familia Inn
+        run: |
+          falhas=0
+          test -f app/javascript/v3/components/PortaInn.vue \
+            && echo "ok   o componente da porta existe" \
+            || { echo "FALTA app/javascript/v3/components/PortaInn.vue"; falhas=$((falhas+1)); }
+          grep -q -- '#383B3F' app/javascript/v3/components/PortaInn.vue \
+            && echo "ok   a acao e tinta (#383B3F)" \
+            || { echo "FALTA a tinta na acao — o primario voltou a ser cor de marca"; falhas=$((falhas+1)); }
+          for f in app/javascript/v3/views/login/Index.vue app/javascript/v3/views/login/Saml.vue; do
+            grep -q '<PortaInn>' "$f" \
+              && echo "ok   $f entra pela porta" \
+              || { echo "FALTA <PortaInn> em $f"; falhas=$((falhas+1)); }
+            # derivado do disco: cada botao da porta tem de trazer a classe da
+            # acao. Contar em vez de listar e o que faz "esqueci um" dar vermelho.
+            b=$(grep -c '<NextButton' "$f" || true)
+            a=$(grep -c 'porta__acao' "$f" || true)
+            test "$b" = "$a" \
+              && echo "ok   $f: $b botao(oes), $a com a classe da acao" \
+              || { echo "$f tem $b <NextButton> e so $a com porta__acao"; falhas=$((falhas+1)); }
+          done
+          grep -q "classList.remove('dark')" app/javascript/v3/App.vue \
+            && echo "ok   a porta abre no claro" \
+            || { echo "FALTA o claro forcado na porta (v3/App.vue)"; falhas=$((falhas+1)); }
+          grep -q 'inn-splash' app/views/layouts/vueapp.html.erb \
+            && echo "ok   splash no primeiro frame" \
+            || { echo "FALTA o splash em vueapp.html.erb"; falhas=$((falhas+1)); }
+          test "$falhas" = "0" || { echo "$falhas lacuna(s) na porta"; exit 1; }
 
       # O mesmo passo do publish_foss_docker.yml oficial. Aqui ele nao e so
       # licenca: sem /app/enterprise o prepend_mod_with nao acha o override do
