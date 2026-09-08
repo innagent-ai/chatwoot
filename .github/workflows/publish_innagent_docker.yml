@@ -31,6 +31,39 @@ jobs:
         with:
           ref: ${{ inputs.tag }}
 
+
+      # Guarda da VARREDURA, na fonte — roda antes do build.
+      # O guarda do bundle (mais abaixo) aprovou um build em que so 1 dos 4
+      # arquivos de variaveis estava temado: os tokens existiam no CSS, entao
+      # ele ficou verde, e a tela de login continuou com a fonte do sistema.
+      # Presenca de token nao prova COBERTURA. Este conta os dois lados.
+      - name: Guarda — todo arquivo de tema foi alcancado
+        run: |
+          falhas=0
+          declaram=$(grep -rl -- '--slate-1:' app/javascript --include='*.scss' --include='*.css' --include='*.vue' | sort)
+          temados=$(grep -rl -- '--slate-12: *41 43 47' app/javascript --include='*.scss' --include='*.css' --include='*.vue' | sort)
+          echo "declaram a escala:"; echo "$declaram" | sed 's/^/  /'
+          echo "receberam a tinta:"; echo "$temados" | sed 's/^/  /'
+          if [ "$declaram" != "$temados" ]; then
+            echo "FALTA tema em:"; comm -23 <(echo "$declaram") <(echo "$temados") | sed 's/^/  /'
+            falhas=$((falhas+1))
+          fi
+          # Pedir a fonte nao basta: ela precisa ser CARREGADA. Um @import no
+          # meio do CSS compilado e ignorado pelo navegador em silencio.
+          pilhas=$(grep -rlE "font-family:" app/javascript --include='*.scss' --include='*.css' --include='*.vue' | xargs grep -lE -- '-apple-system' | sort)
+          comLato=$(grep -rl "'Lato'," app/javascript --include='*.scss' --include='*.css' --include='*.vue' | sort)
+          if [ "$pilhas" != "$comLato" ]; then
+            echo "FALTA Lato na pilha de:"; comm -23 <(echo "$pilhas") <(echo "$comLato") | sed 's/^/  /'
+            falhas=$((falhas+1))
+          else
+            echo "ok   todas as pilhas de fonte comecam por Lato"
+          fi
+          for l in app/views/layouts/vueapp.html.erb app/views/layouts/portal.html.erb; do
+            grep -q 'fonts.googleapis.com' "$l" && echo "ok   fonte carregada em $l" \
+              || { echo "FALTA <link> das fontes em $l"; falhas=$((falhas+1)); }
+          done
+          test "$falhas" = "0" || { echo "$falhas lacuna(s) de cobertura do tema"; exit 1; }
+
       # O mesmo passo do publish_foss_docker.yml oficial. Aqui ele nao e so
       # licenca: sem /app/enterprise o prepend_mod_with nao acha o override do
       # ReconcilePlanConfigService, que e o job que reescrevia os 10 campos de
