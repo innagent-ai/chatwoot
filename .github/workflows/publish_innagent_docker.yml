@@ -1,0 +1,70 @@
+# Publica a imagem do InnChat: Chatwoot CE + a IDV do InnAgent.
+#
+# Por que existe: o Dockerfile do Chatwoot pede ~4 GB de heap de Node
+# (NODE_OPTIONS=--max-old-space-size=4096). A worker01 serve a producao do
+# Santa Vista e a manager01 nao tem esse folego livre — o runner tem.
+#
+# Uma plataforma so (linux/amd64, que e a das VPS): dispensa QEMU, a matriz e
+# o merge de manifesto do workflow oficial, e corta o build pela metade.
+name: Publish InnChat docker image
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag do upstream ja com o tema aplicado (ex.: innagent-4.17.1)'
+        required: true
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/innchat
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+      # O mesmo passo do publish_foss_docker.yml oficial. Aqui ele nao e so
+      # licenca: sem /app/enterprise o prepend_mod_with nao acha o override do
+      # ReconcilePlanConfigService, que e o job que reescrevia os 10 campos de
+      # marca de volta para "Chatwoot" em 24h.
+      - name: Strip enterprise code
+        run: |
+          rm -rf enterprise spec/enterprise
+          echo -en '\nENV CW_EDITION="ce"' >> docker/Dockerfile
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ env.IMAGE }}:${{ inputs.tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Prova de que a imagem saiu CE: sem esta linha o workflow ficaria verde
+      # mesmo publicando uma imagem que reescreve a marca de volta.
+      - name: Prova — a imagem e CE e nao tem enterprise
+        run: |
+          docker run --rm --entrypoint sh ${{ env.IMAGE }}:${{ inputs.tag }} -c \
+            'echo "CW_EDITION=$CW_EDITION"; test ! -d /app/enterprise && echo "enterprise: ausente"' \
+            | tee /dev/stderr | grep -q 'enterprise: ausente'
