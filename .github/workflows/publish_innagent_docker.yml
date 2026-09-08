@@ -80,14 +80,16 @@ jobs:
           docker rm "$cid" > /dev/null
           css=$(cat ./assets-build/*.css)
           falhas=0
+          # -- encerra as opcoes (senao "--slate-12" vira flag do grep) e -E tolera
+          # a minificacao, que come o espaco depois dos dois-pontos.
           checa() {
-            if echo "$css" | grep -qF "$2"; then echo "ok   $1"
+            if echo "$css" | grep -qE -- "$2"; then echo "ok   $1"
             else echo "FALTA $1 ($2)"; falhas=$((falhas+1)); fi
           }
           checa "fonte Lato"          "Lato"
           checa "titulos Bricolage"   "Bricolage Grotesque"
-          checa "azul InnAgent"       "--blue-9: 37 139 251"
-          checa "tinta InnAgent"      "--slate-12: 41 43 47"
-          checa "fundo InnAgent"      "--slate-2: 238 243 249"
-          checa "escuro InnAgent"     "--slate-1: 23 26 31"
+          checa "azul InnAgent"       "--blue-9: *37 139 251"
+          checa "tinta InnAgent"      "--slate-12: *41 43 47"
+          checa "fundo InnAgent"      "--slate-2: *238 243 249"
+          checa "escuro InnAgent"     "--slate-1: *23 26 31"
           test "$falhas" = "0" || { echo "$falhas token(s) do tema faltando no bundle"; exit 1; }
