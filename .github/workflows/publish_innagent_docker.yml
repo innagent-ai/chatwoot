@@ -169,10 +169,17 @@ jobs:
           }
           checa "fonte Lato"          "Lato"
           checa "titulos Bricolage"   "Bricolage Grotesque"
-          checa "azul InnAgent"       "--blue-9: *37 139 251"
-          checa "tinta InnAgent"      "--slate-12: *41 43 47"
-          checa "fundo InnAgent"      "--slate-2: *238 243 249"
-          checa "escuro InnAgent"     "--slate-1: *23 26 31"
+          # O bundle se confere contra a FONTE, nunca contra constantes. O tema deixou
+          # de ancorar hexes e passou a derivar as rampas: procurar "--slate-12: 41 43 47"
+          # reprovava um tema mais completo (528 variaveis contra 60). A pergunta certa
+          # e "o que o CSS compilado serve e o que o disco manda?".
+          for v in slate-12 slate-2 blue-9 iris-9 gray-6; do
+            esperado=$(grep -hoE -- "--$v: *[0-9]+ [0-9]+ [0-9]+;" \
+              app/javascript/dashboard/assets/scss/_next-colors.scss | head -1 | tr -d ';')
+            if [ -z "$esperado" ]; then echo "FALTA $v na fonte"; falhas=$((falhas+1)); continue; fi
+            if echo "$css" | grep -qF -- "$esperado"; then echo "ok   $esperado"
+            else echo "FALTA no bundle: $esperado"; falhas=$((falhas+1)); fi
+          done
           test "$falhas" = "0" || { echo "$falhas token(s) do tema faltando no bundle"; exit 1; }
 
       # Transporte da imagem. O ghcr guarda a imagem, mas o package nasce
