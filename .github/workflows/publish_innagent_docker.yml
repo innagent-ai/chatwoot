@@ -41,7 +41,11 @@ jobs:
         run: |
           falhas=0
           declaram=$(grep -rl -- '--slate-1:' app/javascript --include='*.scss' --include='*.css' --include='*.vue' | sort)
-          temados=$(grep -rl -- '--slate-12: *41 43 47' app/javascript --include='*.scss' --include='*.css' --include='*.vue' | sort)
+          # O selo, nao um hex. O tema deixou de ANCORAR pontos e passou a DERIVAR a
+          # rampa inteira, entao `slate-12` ja nao e o hex da tinta — e a tinta na
+          # luminosidade do passo 12. Procurar o valor antigo reprovava um tema mais
+          # completo que o anterior (medido: 528 variaveis contra 60).
+          temados=$(grep -rl -- 'innagent: rampas derivadas' app/javascript --include='*.scss' --include='*.css' --include='*.vue' | sort)
           echo "declaram a escala:"; echo "$declaram" | sed 's/^/  /'
           echo "receberam a tinta:"; echo "$temados" | sed 's/^/  /'
           # Comparar duas listas fica verde quando AS DUAS sao vazias — um grep
