@@ -71,7 +71,7 @@ const requestAuthorization = async () => {
           </p>
 
           <Button
-            class="text-white !rounded-full !px-6 bg-gradient-to-r from-[#00f2ea] via-[#ff0050] to-[#000000]"
+            class="text-white !rounded-full !px-6 bg-gradient-to-r from-[#B7D6FF] via-[#E94A48] to-[#000000]"
             lg
             icon="i-ri-tiktok-line"
             :disabled="isRequestingAuthorization"
@@ -95,3 +95,5 @@ const requestAuthorization = async () => {
     </div>
   </div>
 </template>
+
+/* innagent: hexes derivados */

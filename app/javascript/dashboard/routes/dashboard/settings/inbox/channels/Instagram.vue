@@ -76,7 +76,7 @@ const requestAuthorization = async () => {
             {{ $t('INBOX_MGMT.ADD.INSTAGRAM.HELP') }}
           </p>
           <Button
-            class="text-white !rounded-full !px-6 bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45]"
+            class="text-white !rounded-full !px-6 bg-gradient-to-r from-[#0062BF] via-[#E94A48] to-[#BDCE13]"
             lg
             icon="i-ri-instagram-line"
             :disabled="
@@ -114,3 +114,5 @@ const requestAuthorization = async () => {
     </div>
   </div>
 </template>
+
+/* innagent: hexes derivados */

@@ -47,11 +47,11 @@ const generateImage = async () => {
     }
 
     const colorMap = {
-      'bg-[#5BD58A]': '#5BD58A',
-      'bg-[#60a5fa]': '#60a5fa',
-      'bg-[#fb923c]': '#fb923c',
-      'bg-[#f87171]': '#f87171',
-      'bg-[#fbbf24]': '#fbbf24',
+      'bg-[#7ACF97]': '#7ACF97',
+      'bg-[#5BA5FF]': '#5BA5FF',
+      'bg-[#ADBC00]': '#ADBC00',
+      'bg-[#FF6B64]': '#FF6B64',
+      'bg-[#C5D728]': '#C5D728',
     };
     const bgColor = colorMap[props.slideBackground] || '#ffffff';
 
@@ -85,7 +85,7 @@ const generateImage = async () => {
 
     ctx.drawImage(img, borderSize, borderSize);
 
-    ctx.fillStyle = '#1f2d3d';
+    ctx.fillStyle = '#002B5A';
     ctx.font = 'normal 16px system-ui, -apple-system, sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText(
@@ -237,3 +237,5 @@ defineExpose({ handleOpen });
     </div>
   </Teleport>
 </template>
+
+/* innagent: hexes derivados */

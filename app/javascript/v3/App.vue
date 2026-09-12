@@ -7,8 +7,10 @@ export default {
     return { theme: 'light' };
   },
   mounted() {
-    this.setColorTheme();
-    this.listenToThemeChanges();
+      // porta: a entrada abre no CLARO, qualquer que seja a
+      // preferencia do sistema. O campo escuro ja e o contraste;
+      // a tela inteira no escuro quebra a leitura da familia Inn.
+      document.documentElement.classList.remove('dark');
     this.setLocale(window.chatwootConfig.selectedLocale);
   },
   methods: {
@@ -59,7 +61,8 @@ export default {
 
 html,
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  font-family:
+    'Lato',-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
   @apply h-full w-full;
 

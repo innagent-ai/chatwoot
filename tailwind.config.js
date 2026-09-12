@@ -1,4 +1,4 @@
-const { slateDark } = require('@radix-ui/colors');
+import { slateDark } from './theme/innagent-radix';
 import { colors } from './theme/colors';
 import { icons } from './theme/icons';
 const defaultTheme = require('tailwindcss/defaultTheme');
@@ -39,10 +39,16 @@ const tailwindConfig = {
   ],
   theme: {
     extend: {
+      // innagent: raios
+      borderRadius: {
+        DEFAULT: '8px', md: '8px', lg: '12px',
+        xl: '12px', '2xl': '12px', '3xl': '48px',
+        full: '100px',
+      },
       fontFamily: {
-        sans: defaultSansFonts,
-        inter: ['Inter', ...defaultSansFonts],
-        interDisplay: ['InterDisplay', ...defaultSansFonts],
+        sans: ['Lato', ...defaultSansFonts],
+        inter: ['Lato', ...defaultSansFonts],
+        interDisplay: ['Bricolage Grotesque', ...defaultSansFonts],
       },
       fontWeight: {
         420: '420',

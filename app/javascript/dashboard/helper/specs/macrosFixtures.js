@@ -30,42 +30,42 @@ export const labels = [
     id: 6,
     title: 'sales',
     description: 'sales team',
-    color: '#8EA20F',
+    color: '#90A048',
     show_on_sidebar: true,
   },
   {
     id: 2,
     title: 'billing',
     description: 'billing',
-    color: '#4077DA',
+    color: '#227ADD',
     show_on_sidebar: true,
   },
   {
     id: 1,
     title: 'snoozed',
     description: 'Items marked for later',
-    color: '#D12F42',
+    color: '#D13134',
     show_on_sidebar: true,
   },
   {
     id: 5,
     title: 'mobile-app',
     description: 'tech team',
-    color: '#2DB1CC',
+    color: '#54A1FF',
     show_on_sidebar: true,
   },
   {
     id: 14,
     title: 'human-resources-department-with-long-title',
     description: 'Test',
-    color: '#FF6E09',
+    color: '#9DAB00',
     show_on_sidebar: true,
   },
   {
     id: 22,
     title: 'priority',
     description: 'For important sales leads',
-    color: '#7E7CED',
+    color: '#378DF1',
     show_on_sidebar: true,
   },
 ];
@@ -120,3 +120,5 @@ export const files = [
     filename: 'screenshot.png',
   },
 ];
+
+/* innagent: hexes derivados */

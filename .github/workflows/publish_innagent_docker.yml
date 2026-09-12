@@ -1,0 +1,201 @@
+# Publica a imagem do InnChat: Chatwoot CE + a IDV do InnAgent.
+#
+# Por que existe: o Dockerfile do Chatwoot pede ~4 GB de heap de Node
+# (NODE_OPTIONS=--max-old-space-size=4096). A worker01 serve a producao do
+# Santa Vista e a manager01 nao tem esse folego livre — o runner tem.
+#
+# Uma plataforma so (linux/amd64, que e a das VPS): dispensa QEMU, a matriz e
+# o merge de manifesto do workflow oficial, e corta o build pela metade.
+name: Publish InnChat docker image
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag do upstream ja com o tema aplicado (ex.: innagent-4.17.1)'
+        required: true
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/innchat
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+
+      # Guarda da VARREDURA, na fonte — roda antes do build.
+      # O guarda do bundle (mais abaixo) aprovou um build em que so 1 dos 4
+      # arquivos de variaveis estava temado: os tokens existiam no CSS, entao
+      # ele ficou verde, e a tela de login continuou com a fonte do sistema.
+      # Presenca de token nao prova COBERTURA. Este conta os dois lados.
+      - name: Guarda — todo arquivo de tema foi alcancado
+        run: |
+          falhas=0
+          declaram=$(grep -rl -- '--slate-1:' app/javascript --include='*.scss' --include='*.css' --include='*.vue' | sort)
+          # O selo, nao um hex. O tema deixou de ANCORAR pontos e passou a DERIVAR a
+          # rampa inteira, entao `slate-12` ja nao e o hex da tinta — e a tinta na
+          # luminosidade do passo 12. Procurar o valor antigo reprovava um tema mais
+          # completo que o anterior (medido: 528 variaveis contra 60).
+          temados=$(grep -rl -- 'innagent: rampas derivadas' app/javascript --include='*.scss' --include='*.css' --include='*.vue' | sort)
+          echo "declaram a escala:"; echo "$declaram" | sed 's/^/  /'
+          echo "receberam a tinta:"; echo "$temados" | sed 's/^/  /'
+          # Comparar duas listas fica verde quando AS DUAS sao vazias — um grep
+          # que nao acha nada viraria "cobertura perfeita". Piso explicito.
+          test "$(echo "$declaram" | grep -c .)" -ge 4 \
+            || { echo "so $(echo "$declaram" | grep -c .) arquivos declaram a escala; eram 4"; falhas=$((falhas+1)); }
+          if [ "$declaram" != "$temados" ]; then
+            echo "FALTA tema em:"; comm -23 <(echo "$declaram") <(echo "$temados") | sed 's/^/  /'
+            falhas=$((falhas+1))
+          fi
+          # Pedir a fonte nao basta: ela precisa ser CARREGADA. Um @import no
+          # meio do CSS compilado e ignorado pelo navegador em silencio.
+          pilhas=$(grep -rlE "font-family:" app/javascript --include='*.scss' --include='*.css' --include='*.vue' | xargs grep -lE -- '-apple-system' | sort)
+          comLato=$(grep -rl "'Lato'," app/javascript --include='*.scss' --include='*.css' --include='*.vue' | sort)
+          # SUBCONJUNTO, não igualdade: toda pilha com -apple-system precisa ter Lato,
+          # mas ter Lato num arquivo SEM essa âncora não é defeito — é o caso do
+          # PortaInn.vue, que declara a própria pilha. Exigir os dois conjuntos iguais
+          # reprovava um tema correto (falso vermelho medido em 08/09).
+          semLato=$(comm -23 <(echo "$pilhas") <(echo "$comLato"))
+          if [ -n "$semLato" ]; then
+            echo "FALTA Lato na pilha de:"; echo "$semLato" | sed 's/^/  /'
+            falhas=$((falhas+1))
+          else
+            echo "ok   todas as pilhas de fonte comecam por Lato ($(echo "$pilhas" | grep -c .))"
+            test "$(echo "$pilhas" | grep -c .)" -ge 6 \
+              || { echo "so $(echo "$pilhas" | grep -c .) pilhas encontradas; eram 6"; falhas=$((falhas+1)); }
+          fi
+          for l in app/views/layouts/vueapp.html.erb app/views/layouts/portal.html.erb; do
+            grep -q 'fonts.googleapis.com' "$l" && echo "ok   fonte carregada em $l" \
+              || { echo "FALTA <link> das fontes em $l"; falhas=$((falhas+1)); }
+          done
+          test "$falhas" = "0" || { echo "$falhas lacuna(s) de cobertura do tema"; exit 1; }
+
+      # Guarda da PORTA (a tela de entrada da familia Inn).
+      # O botao primario do login era AZUL — a regra da prancha e "acao e
+      # neutra: primario em tinta escura; cor de marca nao vira botao". Regra
+      # que depende de alguem lembrar volta: aqui ela reprova o build.
+      - name: Guarda — a porta da familia Inn
+        run: |
+          falhas=0
+          test -f app/javascript/v3/components/PortaInn.vue \
+            && echo "ok   o componente da porta existe" \
+            || { echo "FALTA app/javascript/v3/components/PortaInn.vue"; falhas=$((falhas+1)); }
+          grep -q -- '#383B3F' app/javascript/v3/components/PortaInn.vue \
+            && echo "ok   a acao e tinta (#383B3F)" \
+            || { echo "FALTA a tinta na acao — o primario voltou a ser cor de marca"; falhas=$((falhas+1)); }
+          for f in app/javascript/v3/views/login/Index.vue app/javascript/v3/views/login/Saml.vue; do
+            grep -q '<PortaInn>' "$f" \
+              && echo "ok   $f entra pela porta" \
+              || { echo "FALTA <PortaInn> em $f"; falhas=$((falhas+1)); }
+            # derivado do disco: cada botao da porta tem de trazer a classe da
+            # acao. Contar em vez de listar e o que faz "esqueci um" dar vermelho.
+            b=$(grep -c '<NextButton' "$f" || true)
+            a=$(grep -c 'porta__acao' "$f" || true)
+            test "$b" = "$a" \
+              && echo "ok   $f: $b botao(oes), $a com a classe da acao" \
+              || { echo "$f tem $b <NextButton> e so $a com porta__acao"; falhas=$((falhas+1)); }
+          done
+          grep -q "classList.remove('dark')" app/javascript/v3/App.vue \
+            && echo "ok   a porta abre no claro" \
+            || { echo "FALTA o claro forcado na porta (v3/App.vue)"; falhas=$((falhas+1)); }
+          grep -q 'inn-splash' app/views/layouts/vueapp.html.erb \
+            && echo "ok   splash no primeiro frame" \
+            || { echo "FALTA o splash em vueapp.html.erb"; falhas=$((falhas+1)); }
+          test "$falhas" = "0" || { echo "$falhas lacuna(s) na porta"; exit 1; }
+
+      # O mesmo passo do publish_foss_docker.yml oficial. Aqui ele nao e so
+      # licenca: sem /app/enterprise o prepend_mod_with nao acha o override do
+      # ReconcilePlanConfigService, que e o job que reescrevia os 10 campos de
+      # marca de volta para "Chatwoot" em 24h.
+      - name: Strip enterprise code
+        run: |
+          rm -rf enterprise spec/enterprise
+          echo -en '\nENV CW_EDITION="ce"' >> docker/Dockerfile
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ env.IMAGE }}:${{ inputs.tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Prova de que a imagem saiu CE: sem esta linha o workflow ficaria verde
+      # mesmo publicando uma imagem que reescreve a marca de volta.
+      - name: Prova — a imagem e CE e nao tem enterprise
+        run: |
+          docker run --rm --entrypoint sh ${{ env.IMAGE }}:${{ inputs.tag }} -c \
+            'echo "CW_EDITION=$CW_EDITION"; test ! -d /app/enterprise && echo "enterprise: ausente"' \
+            | tee /dev/stderr | grep -q 'enterprise: ausente'
+
+      # Guarda do TEMA. O passo acima prova a edicao; este prova a IDV.
+      # Sem ele o workflow fica verde publicando uma imagem que buildou bem e
+      # nao tem o tema — o defeito que "artefato conferido != tela conferida"
+      # descreve: a imagem existe, o CSS dentro dela e o do motor.
+      - name: Prova — a IDV do InnAgent esta no CSS compilado
+        run: |
+          cid=$(docker create ${{ env.IMAGE }}:${{ inputs.tag }})
+          docker cp "$cid:/app/public/vite/assets" ./assets-build
+          docker rm "$cid" > /dev/null
+          css=$(cat ./assets-build/*.css)
+          falhas=0
+          # -- encerra as opcoes (senao "--slate-12" vira flag do grep) e -E tolera
+          # a minificacao, que come o espaco depois dos dois-pontos.
+          checa() {
+            if echo "$css" | grep -qE -- "$2"; then echo "ok   $1"
+            else echo "FALTA $1 ($2)"; falhas=$((falhas+1)); fi
+          }
+          checa "fonte Lato"          "Lato"
+          checa "titulos Bricolage"   "Bricolage Grotesque"
+          # O bundle se confere contra a FONTE, nunca contra constantes. O tema deixou
+          # de ancorar hexes e passou a derivar as rampas: procurar "--slate-12: 41 43 47"
+          # reprovava um tema mais completo (528 variaveis contra 60). A pergunta certa
+          # e "o que o CSS compilado serve e o que o disco manda?".
+          for v in slate-12 slate-2 blue-9 iris-9 gray-6; do
+            esperado=$(grep -hoE -- "--$v: *[0-9]+ [0-9]+ [0-9]+;" \
+              app/javascript/dashboard/assets/scss/_next-colors.scss | head -1 | tr -d ';')
+            if [ -z "$esperado" ]; then echo "FALTA $v na fonte"; falhas=$((falhas+1)); continue; fi
+            if echo "$css" | grep -qF -- "$esperado"; then echo "ok   $esperado"
+            else echo "FALTA no bundle: $esperado"; falhas=$((falhas+1)); fi
+          done
+          test "$falhas" = "0" || { echo "$falhas token(s) do tema faltando no bundle"; exit 1; }
+
+      # Transporte da imagem. O ghcr guarda a imagem, mas o package nasce
+      # PRIVADO e ler de fora exige o escopo read:packages, que o token da
+      # maquina nao tem. O artifact do proprio run e legivel com o escopo
+      # `repo` que ja existe — entao a imagem viaja por aqui, sem credencial
+      # nova em lugar nenhum.
+      - name: Exportar a imagem como artifact
+        run: |
+          docker save ${{ env.IMAGE }}:${{ inputs.tag }} | gzip -1 > innchat.tar.gz
+          ls -lh innchat.tar.gz
+
+      - name: Upload da imagem
+        uses: actions/upload-artifact@v4
+        with:
+          name: innchat-${{ inputs.tag }}
+          path: innchat.tar.gz
+          retention-days: 5
+          compression-level: 0

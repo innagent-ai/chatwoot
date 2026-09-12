@@ -54,35 +54,35 @@ export const CSAT_RATINGS = [
     translationKey: 'CSAT.RATINGS.POOR',
     emoji: '😞',
     value: 1,
-    color: '#FDAD2A',
+    color: '#BCCC0E',
   },
   {
     key: 'expressionless',
     translationKey: 'CSAT.RATINGS.FAIR',
     emoji: '😑',
     value: 2,
-    color: '#FFC532',
+    color: '#CBDC31',
   },
   {
     key: 'neutral',
     translationKey: 'CSAT.RATINGS.AVERAGE',
     emoji: '😐',
     value: 3,
-    color: '#FCEC56',
+    color: '#F6EC86',
   },
   {
     key: 'grinning',
     translationKey: 'CSAT.RATINGS.GOOD',
     emoji: '😀',
     value: 4,
-    color: '#6FD86F',
+    color: '#87D285',
   },
   {
     key: 'smiling',
     emoji: '😍',
     translationKey: 'CSAT.RATINGS.EXCELLENT',
     value: 5,
-    color: '#44CE4B',
+    color: '#6AC76A',
   },
 ];
 
@@ -168,3 +168,5 @@ export const TWILIO_CONTENT_TEMPLATE_TYPES = {
   QUICK_REPLY: 'quick_reply',
   CALL_TO_ACTION: 'call_to_action',
 };
+
+/* innagent: hexes derivados */

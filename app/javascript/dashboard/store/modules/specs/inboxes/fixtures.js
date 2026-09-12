@@ -18,7 +18,7 @@ export default [
     channel_type: 'Channel::WebWidget',
     avatar_url: null,
     page_id: null,
-    widget_color: '#7B64FF',
+    widget_color: '#2C83E6',
     website_token: 'randomid123',
     enable_auto_assignment: true,
   },
@@ -29,7 +29,7 @@ export default [
     channel_type: 'Channel::WebWidget',
     avatar_url: null,
     page_id: null,
-    widget_color: '#68BC00',
+    widget_color: '#79B74C',
     website_token: 'randomid124',
     enable_auto_assignment: true,
   },
@@ -40,7 +40,7 @@ export default [
     channel_type: 'Channel::WebWidget',
     avatar_url: null,
     page_id: null,
-    widget_color: '#68BC00',
+    widget_color: '#79B74C',
     website_token: 'randomid125',
     enable_auto_assignment: true,
   },
@@ -52,7 +52,7 @@ export default [
     avatar_url: null,
     medium: 'sms',
     page_id: null,
-    widget_color: '#68BC00',
+    widget_color: '#79B74C',
     website_token: 'randomid125',
     enable_auto_assignment: true,
   },
@@ -80,3 +80,5 @@ export default [
     provider: 'default',
   },
 ];
+
+/* innagent: hexes derivados */

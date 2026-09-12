@@ -150,11 +150,11 @@ export default {
 
 @layer components {
   .macro-gradient-radial {
-    background-image: radial-gradient(#ebf0f5 1.2px, transparent 0);
+    background-image: radial-gradient(#EEEFF1 1.2px, transparent 0);
   }
 
   .macro-dark-gradient-radial {
-    background-image: radial-gradient(#293f51 1.2px, transparent 0);
+    background-image: radial-gradient(#003B77 1.2px, transparent 0);
   }
 
   .macro-gradient-radial-size {
@@ -162,3 +162,5 @@ export default {
   }
 }
 </style>
+
+/* innagent: hexes derivados */

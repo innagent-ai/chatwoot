@@ -29,7 +29,7 @@ describe('portalThemeHelper', () => {
       removeEventListener: vi.fn(),
     }));
 
-    window.portalConfig = { portalColor: '#ff5733' };
+    window.portalConfig = { portalColor: '#95A300' };
     document.documentElement.style.setProperty = vi.fn();
     document.documentElement.classList.remove('dark', 'light');
 
@@ -47,7 +47,7 @@ describe('portalThemeHelper', () => {
 
   describe('#setPortalHoverColor', () => {
     it('should apply dark hover color in dark theme', () => {
-      const hoverColor = adjustColorForContrast('#ff5733', '#151718');
+      const hoverColor = adjustColorForContrast('#95A300', '#161718');
       setPortalHoverColor('dark');
       expect(document.documentElement.style.setProperty).toHaveBeenCalledWith(
         '--dynamic-hover-color',
@@ -56,7 +56,7 @@ describe('portalThemeHelper', () => {
     });
 
     it('should apply light hover color in light theme', () => {
-      const hoverColor = adjustColorForContrast('#ff5733', '#ffffff');
+      const hoverColor = adjustColorForContrast('#95A300', '#ffffff');
       setPortalHoverColor('light');
       expect(document.documentElement.style.setProperty).toHaveBeenCalledWith(
         '--dynamic-hover-color',
@@ -292,3 +292,5 @@ describe('portalThemeHelper', () => {
     });
   });
 });
+
+/* innagent: hexes derivados */

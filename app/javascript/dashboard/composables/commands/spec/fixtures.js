@@ -170,7 +170,7 @@ export const mockActiveLabels = [
     id: 16,
     title: 'billing',
     description: '',
-    color: '#D8EA19',
+    color: '#D8E76B',
     show_on_sidebar: true,
   },
 ];
@@ -180,7 +180,7 @@ export const mockInactiveLabels = [
     id: 2,
     title: 'Feature Request',
     description: '',
-    color: '#D8EA19',
+    color: '#D8E76B',
     show_on_sidebar: true,
   },
 ];
@@ -199,3 +199,5 @@ export const MOCK_FEATURE_FLAGS = {
   AUDIT_LOGS: 'audit_logs',
   MACROS: 'macros',
 };
+
+/* innagent: hexes derivados */

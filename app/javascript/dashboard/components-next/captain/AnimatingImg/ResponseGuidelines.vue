@@ -920,8 +920,8 @@ const toggle = () => {
 
 <style scoped>
 svg {
-  --gradient-start: #fcfcfd;
-  --gradient-end: #fcfcfd;
+  --gradient-start: #FBFCFE;
+  --gradient-end: #FBFCFE;
 }
 
 body.dark svg,
@@ -988,3 +988,5 @@ body.dark svg,
   opacity: 0;
 }
 </style>
+
+/* innagent: hexes derivados */

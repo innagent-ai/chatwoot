@@ -33,22 +33,22 @@ const displayFileName = computed(() => {
 
 const textColorClass = computed(() => {
   const colorMap = {
-    '7z': 'dark:text-[#EDEEF0] text-[#2F265F]',
+    '7z': 'dark:text-[#EDEEF0] text-[#003063]',
     csv: 'text-n-amber-12',
-    doc: 'dark:text-[#D6E1FF] text-[#1F2D5C]', // indigo-12
-    docx: 'dark:text-[#D6E1FF] text-[#1F2D5C]', // indigo-12
+    doc: 'dark:text-[#CEE4FF] text-[#003063]', // indigo-12
+    docx: 'dark:text-[#CEE4FF] text-[#003063]', // indigo-12
     json: 'text-n-slate-12',
-    odt: 'dark:text-[#D6E1FF] text-[#1F2D5C]', // indigo-12
+    odt: 'dark:text-[#CEE4FF] text-[#003063]', // indigo-12
     pdf: 'text-n-slate-12',
-    ppt: 'dark:text-[#FFE0C2] text-[#582D1D]',
-    pptx: 'dark:text-[#FFE0C2] text-[#582D1D]',
-    rar: 'dark:text-[#EDEEF0] text-[#2F265F]',
-    rtf: 'dark:text-[#D6E1FF] text-[#1F2D5C]', // indigo-12
-    tar: 'dark:text-[#EDEEF0] text-[#2F265F]',
+    ppt: 'dark:text-[#E2F451] text-[#393F00]',
+    pptx: 'dark:text-[#E2F451] text-[#393F00]',
+    rar: 'dark:text-[#EDEEF0] text-[#003063]',
+    rtf: 'dark:text-[#CEE4FF] text-[#003063]', // indigo-12
+    tar: 'dark:text-[#EDEEF0] text-[#003063]',
     txt: 'text-n-slate-12',
     xls: 'text-n-teal-12',
     xlsx: 'text-n-teal-12',
-    zip: 'dark:text-[#EDEEF0] text-[#2F265F]',
+    zip: 'dark:text-[#EDEEF0] text-[#003063]',
   };
 
   return colorMap[fileDetails.value.type] || 'text-n-slate-12';
@@ -78,3 +78,5 @@ const textColorClass = computed(() => {
     </a>
   </div>
 </template>
+
+/* innagent: hexes derivados */

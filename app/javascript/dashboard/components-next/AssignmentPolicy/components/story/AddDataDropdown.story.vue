@@ -38,22 +38,22 @@ const mockTags = [
   {
     id: 1,
     name: 'urgent',
-    color: '#ff4757',
+    color: '#F65652',
   },
   {
     id: 2,
     name: 'bug',
-    color: '#ff6b6b',
+    color: '#FF6C65',
   },
   {
     id: 3,
     name: 'feature-request',
-    color: '#4834d4',
+    color: '#0058AB',
   },
   {
     id: 4,
     name: 'documentation',
-    color: '#26de81',
+    color: '#67D691',
   },
 ];
 
@@ -90,3 +90,5 @@ const handleAdd = item => {
     </Variant>
   </Story>
 </template>
+
+/* innagent: hexes derivados */

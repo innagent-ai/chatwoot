@@ -15,19 +15,19 @@ export const iconClassFor = value =>
   value.startsWith(ICON_PREFIX) ? value : `${ICON_PREFIX}${value}`;
 
 export const ICON_COLORS = [
-  { name: 'SLATE', value: '#64748B' },
-  { name: 'RED', value: '#EF4444' },
-  { name: 'ORANGE', value: '#F97316' },
-  { name: 'AMBER', value: '#F59E0B' },
-  { name: 'GREEN', value: '#22C55E' },
-  { name: 'TEAL', value: '#14B8A6' },
-  { name: 'BLUE', value: '#3B82F6' },
-  { name: 'INDIGO', value: '#6366F1' },
-  { name: 'VIOLET', value: '#8B5CF6' },
-  { name: 'PINK', value: '#EC4899' },
+  { name: 'SLATE', value: '#1571D3' },
+  { name: 'RED', value: '#EA4B49' },
+  { name: 'ORANGE', value: '#9DAB00' },
+  { name: 'AMBER', value: '#B0C000' },
+  { name: 'GREEN', value: '#5ABE73' },
+  { name: 'TEAL', value: '#55A1FF' },
+  { name: 'BLUE', value: '#3187EA' },
+  { name: 'INDIGO', value: '#237BDE' },
+  { name: 'VIOLET', value: '#2A81E4' },
+  { name: 'PINK', value: '#F1524F' },
 ];
 
-export const DEFAULT_ICON_COLOR = '#3B82F6';
+export const DEFAULT_ICON_COLOR = '#3187EA';
 
 export const PICKER_MODE = {
   BOTH: 'both',
@@ -38,3 +38,5 @@ export const PICKER_TAB = {
   ICONS: 'icons',
   EMOJIS: 'emojis',
 };
+
+/* innagent: hexes derivados */

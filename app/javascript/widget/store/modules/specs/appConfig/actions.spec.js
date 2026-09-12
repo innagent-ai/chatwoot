@@ -20,8 +20,8 @@ describe('#actions', () => {
 
   describe('#setWidgetColor', () => {
     it('creates actions properly', () => {
-      actions.setWidgetColor({ commit }, '#eaeaea');
-      expect(commit.mock.calls).toEqual([['SET_WIDGET_COLOR', '#eaeaea']]);
+      actions.setWidgetColor({ commit }, '#E9EAEC');
+      expect(commit.mock.calls).toEqual([['SET_WIDGET_COLOR', '#E9EAEC']]);
     });
   });
 
@@ -39,3 +39,5 @@ describe('#actions', () => {
     });
   });
 });
+
+/* innagent: hexes derivados */

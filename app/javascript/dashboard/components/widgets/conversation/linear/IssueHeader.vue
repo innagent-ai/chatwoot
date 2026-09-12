@@ -32,7 +32,7 @@ const openIssue = () => {
         <fluent-icon
           icon="linear"
           size="16"
-          class="text-[#5E6AD2]"
+          class="text-[#1B75D7]"
           view-box="0 0 19 19"
         />
         <span class="text-xs font-medium text-n-slate-12">
@@ -54,3 +54,5 @@ const openIssue = () => {
     <Button ghost xs slate icon="i-lucide-unlink" @click="unlinkIssue" />
   </div>
 </template>
+
+/* innagent: hexes derivados */

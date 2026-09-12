@@ -59,11 +59,11 @@ const currentVisualSlide = computed(() => {
 });
 
 const slideBackgrounds = [
-  'bg-[#5BD58A]',
-  'bg-[#60a5fa]',
-  'bg-[#fb923c]',
-  'bg-[#f87171]',
-  'bg-[#fbbf24]',
+  'bg-[#7ACF97]',
+  'bg-[#5BA5FF]',
+  'bg-[#ADBC00]',
+  'bg-[#FF6B64]',
+  'bg-[#C5D728]',
 ];
 
 const playDrumroll = () => {
@@ -387,3 +387,5 @@ watch(
     />
   </Teleport>
 </template>
+
+/* innagent: hexes derivados */

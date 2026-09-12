@@ -18,7 +18,7 @@ export default {
     },
     color: {
       type: String,
-      default: '#6e6f73',
+      default: '#6E6F71',
     },
   },
 };
@@ -34,3 +34,5 @@ export default {
     <Spinner v-else size="small" />
   </button>
 </template>
+
+/* innagent: hexes derivados */
