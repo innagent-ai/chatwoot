@@ -65,6 +65,8 @@ class Message < ApplicationRecord
 
   before_validation :ensure_content_type
   before_validation :prevent_message_flooding
+  # Depois de ensure_content_type: a assinatura so vale para texto.
+  include InnagentAssinaturaHumana
   before_save :ensure_processed_message_content
   before_save :ensure_in_reply_to
 
