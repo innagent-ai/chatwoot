@@ -13,9 +13,11 @@ import { label } from './fixtures';
       <Label
         :label="{
           title: 'Custom Label',
-          color: '#FF5733',
+          color: '#95A300',
         }"
       />
     </Variant>
   </Story>
 </template>
+
+/* innagent: hexes derivados */

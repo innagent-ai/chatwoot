@@ -20,9 +20,11 @@ export const adjustColorForContrast = (color, backgroundColor) => {
       break;
     }
     const adjustmentDirection =
-      getLuminance(adjustedColor) < 0.5 ? '#fff' : '#151718';
+      getLuminance(adjustedColor) < 0.5 ? '#fff' : '#161718';
     adjustedColor = mix(adjustedColor, adjustmentDirection, 0.05);
   }
 
   return toHex(adjustedColor);
 };
+
+/* innagent: hexes derivados */

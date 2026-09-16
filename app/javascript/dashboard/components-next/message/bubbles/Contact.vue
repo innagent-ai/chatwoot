@@ -99,10 +99,12 @@ const action = computed(() => ({
 <template>
   <BaseAttachmentBubble
     icon="i-teenyicons-user-circle-solid"
-    icon-bg-color="bg-[#D6409F]"
+    icon-bg-color="bg-[#2F85E8]"
     sender-translation-key="CONVERSATION.SHARED_ATTACHMENT.CONTACT"
     :title="contactName"
     :content="phoneNumber"
     :action="formattedPhoneNumber ? action : null"
   />
 </template>
+
+/* innagent: hexes derivados */

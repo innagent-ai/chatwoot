@@ -279,13 +279,15 @@ ninja-keys {
 body.dark {
   ninja-keys {
     --ninja-overflow-background: rgba(26, 29, 30, 0.5);
-    --ninja-modal-background: #151718;
-    --ninja-secondary-background-color: #26292b;
-    --ninja-selected-background: #26292b;
-    --ninja-footer-background: #2b2f31;
-    --ninja-text-color: #f8faf9;
-    --ninja-icon-color: #f8faf9;
-    --ninja-secondary-text-color: #c2c9c6;
+    --ninja-modal-background: #161718;
+    --ninja-secondary-background-color: #28282A;
+    --ninja-selected-background: #28282A;
+    --ninja-footer-background: #2E2E30;
+    --ninja-text-color: #F9F9FB;
+    --ninja-icon-color: #F9F9FB;
+    --ninja-secondary-text-color: #C6C7C9;
   }
 }
 </style>
+
+/* innagent: hexes derivados */

@@ -38,7 +38,7 @@ const chartData = computed(() => {
       {
         id: 'conversations',
         label: 'Conversations',
-        color: '#1f93ff',
+        color: '#3D92F7',
         data: sourceData.map(([, value]) => value),
       },
     ],
@@ -82,3 +82,5 @@ const chartData = computed(() => {
     </div>
   </div>
 </template>
+
+/* innagent: hexes derivados */

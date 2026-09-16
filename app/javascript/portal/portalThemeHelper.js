@@ -14,7 +14,7 @@ export const setPortalHoverColor = theme => {
   // This function is to set the hover color for the portal
   const resolvedTheme = getResolvedTheme(theme);
   const portalColor = window.portalConfig.portalColor;
-  const bgColor = resolvedTheme === 'dark' ? '#151718' : 'white';
+  const bgColor = resolvedTheme === 'dark' ? '#161718' : 'white';
   const hoverColor = adjustColorForContrast(portalColor, bgColor);
 
   // Set hover color for border and text dynamically
@@ -141,3 +141,5 @@ export const initializeTheme = () => {
   // add the media query listener to update the theme when the system theme changes
   initializeMediaQueryListener();
 };
+
+/* innagent: hexes derivados */

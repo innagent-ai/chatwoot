@@ -974,7 +974,7 @@ const menuItems = computed(() => {
         class="flex gap-2 items-center min-w-0"
         :class="{
           'justify-center px-1': isEffectivelyCollapsed,
-          'px-2': !isEffectivelyCollapsed,
+          'px-3': !isEffectivelyCollapsed,
         }"
       >
         <template v-if="isEffectivelyCollapsed">

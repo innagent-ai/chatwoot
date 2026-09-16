@@ -731,8 +731,8 @@
 
 <style scoped>
 svg {
-  --gradient-start: #fcfcfd;
-  --gradient-end: #fcfcfd;
+  --gradient-start: #FBFCFE;
+  --gradient-end: #FBFCFE;
 }
 
 body.dark svg,
@@ -750,3 +750,5 @@ body.dark svg,
   outline: none;
 }
 </style>
+
+/* innagent: hexes derivados */

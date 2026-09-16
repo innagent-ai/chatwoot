@@ -467,7 +467,7 @@ export const inboxes = [
     timezone: 'America/Los_Angeles',
     callback_webhook_url: null,
     allow_messages_after_resolved: true,
-    widget_color: '#1f93ff',
+    widget_color: '#3D92F7',
     website_url: 'https://acme.inc',
     hmac_mandatory: false,
     welcome_title: '',
@@ -809,3 +809,5 @@ export const slaPolicies = [
     updated_at: '2022-01-26T08:06:39.470Z',
   },
 ];
+
+/* innagent: hexes derivados */

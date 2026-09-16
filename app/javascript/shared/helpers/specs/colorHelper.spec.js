@@ -22,7 +22,7 @@ describe('#adjustColorForContrast', () => {
   };
 
   it('adjusts a color to meet the contrast ratio against a light background', () => {
-    const color = '#ff0000';
+    const color = '#E74846';
     const backgroundColor = '#ffffff';
     const adjustedColor = adjustColorForContrast(color, backgroundColor);
     const ratio = getContrastRatio(adjustedColor, backgroundColor);
@@ -31,7 +31,7 @@ describe('#adjustColorForContrast', () => {
   });
 
   it('adjusts a color to meet the contrast ratio against a dark background', () => {
-    const color = '#00ff00';
+    const color = '#6DF665';
     const backgroundColor = '#000000';
     const adjustedColor = adjustColorForContrast(color, backgroundColor);
     const ratio = getContrastRatio(adjustedColor, backgroundColor);
@@ -40,7 +40,7 @@ describe('#adjustColorForContrast', () => {
   });
 
   it('returns a string representation of the color', () => {
-    const color = '#00ff00';
+    const color = '#6DF665';
     const backgroundColor = '#000000';
     const adjustedColor = adjustColorForContrast(color, backgroundColor);
 
@@ -65,3 +65,5 @@ describe('#adjustColorForContrast', () => {
     expect(adjustedColor).toEqual(toHex(color));
   });
 });
+
+/* innagent: hexes derivados */

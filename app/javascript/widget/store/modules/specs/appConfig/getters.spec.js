@@ -3,8 +3,8 @@ import { getters } from '../../appConfig';
 describe('#getters', () => {
   describe('#getWidgetColor', () => {
     it('returns correct value', () => {
-      const state = { widgetColor: '#00bcd4' };
-      expect(getters.getWidgetColor(state)).toEqual('#00bcd4');
+      const state = { widgetColor: '#65AAFF' };
+      expect(getters.getWidgetColor(state)).toEqual('#65AAFF');
     });
   });
   describe('#getReferrerHost', () => {
@@ -68,3 +68,5 @@ describe('#getters', () => {
     });
   });
 });
+
+/* innagent: hexes derivados */

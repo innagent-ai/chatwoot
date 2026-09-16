@@ -30,7 +30,7 @@ const mapUrl = computed(
 <template>
   <BaseAttachmentBubble
     icon="i-ph-navigation-arrow-fill"
-    icon-bg-color="bg-[#0D9B8A]"
+    icon-bg-color="bg-[#2F86E9]"
     sender-translation-key="CONVERSATION.SHARED_ATTACHMENT.LOCATION"
     :content="title"
     :action="{
@@ -39,3 +39,5 @@ const mapUrl = computed(
     }"
   />
 </template>
+
+/* innagent: hexes derivados */

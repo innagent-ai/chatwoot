@@ -182,7 +182,7 @@ export default {
             <woot-label
               variant="dashed"
               v-bind="label"
-              :bg-color="selectedLabels.includes(label.title) ? '#2781F6' : ''"
+              :bg-color="selectedLabels.includes(label.title) ? '#2E85E8' : ''"
             />
           </button>
           <NextButton
@@ -275,3 +275,5 @@ export default {
   }
 }
 </style>
+
+/* innagent: hexes derivados */

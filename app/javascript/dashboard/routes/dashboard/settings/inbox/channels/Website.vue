@@ -18,7 +18,7 @@ export default {
     return {
       inboxName: '',
       channelWebsiteUrl: '',
-      channelWidgetColor: '#009CE0',
+      channelWidgetColor: '#3D92F7',
       channelWelcomeTitle: '',
       channelWelcomeTagline: '',
       greetingEnabled: false,
@@ -204,3 +204,5 @@ export default {
     </form>
   </div>
 </template>
+
+/* innagent: hexes derivados */

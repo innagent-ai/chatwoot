@@ -62,8 +62,8 @@ const getRecordPluginOptions = audioFormat => {
 const initWaveSurfer = () => {
   wavesurfer.value = WaveSurfer.create({
     container: waveformContainer.value,
-    waveColor: '#1F93FF',
-    progressColor: '#6E6F73',
+    waveColor: '#3D92F7',
+    progressColor: '#6E6F71',
     height: 100,
     barWidth: 2,
     barGap: 1,
@@ -158,3 +158,5 @@ defineExpose({ playPause, stopRecording, record });
 <template>
   <div ref="waveformContainer" class="w-full p-1" />
 </template>
+
+/* innagent: hexes derivados */

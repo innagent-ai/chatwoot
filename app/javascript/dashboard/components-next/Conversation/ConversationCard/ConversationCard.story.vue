@@ -369,42 +369,42 @@ const accountLabels = computed(() => [
     id: 1,
     title: 'billing',
     description: 'Label is used for tagging billing related conversations',
-    color: '#28AD21',
+    color: '#51A74A',
     show_on_sidebar: true,
   },
   {
     id: 3,
     title: 'delivery',
     description: null,
-    color: '#A2FDD5',
+    color: '#B6F8D9',
     show_on_sidebar: true,
   },
   {
     id: 6,
     title: 'lead',
     description: null,
-    color: '#F161C8',
+    color: '#57A2FF',
     show_on_sidebar: true,
   },
   {
     id: 4,
     title: 'ops-handover',
     description: null,
-    color: '#A53326',
+    color: '#B5061C',
     show_on_sidebar: true,
   },
   {
     id: 5,
     title: 'premium-customer',
     description: null,
-    color: '#6FD4EF',
+    color: '#9BC7FF',
     show_on_sidebar: true,
   },
   {
     id: 2,
     title: 'software',
     description: null,
-    color: '#8F6EF2',
+    color: '#358AEE',
     show_on_sidebar: true,
   },
 ]);
@@ -475,3 +475,5 @@ const accountLabels = computed(() => [
     </Variant>
   </Story>
 </template>
+
+/* innagent: hexes derivados */
